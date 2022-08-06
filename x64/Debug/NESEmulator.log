@@ -1,0 +1,16 @@
+﻿  Bus.cpp
+C:\Users\Ludo\source\repos\NESEmulator\NESEmulator\Bus.cpp(16,27): warning C4244: 'argument': conversion from 'uint16_t' to 'uint8_t', possible loss of data
+C:\Users\Ludo\source\repos\NESEmulator\NESEmulator\Bus.cpp(21,27): warning C4244: '=': conversion from 'uint16_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=uint8_t
+          ]
+C:\Users\Ludo\source\repos\NESEmulator\NESEmulator\Bus.cpp(23,31): warning C4244: 'argument': conversion from 'uint16_t' to 'uint8_t', possible loss of data
+C:\Users\Ludo\source\repos\NESEmulator\NESEmulator\Bus.cpp(26,14): warning C4244: '=': conversion from 'uint16_t' to 'uint8_t', possible loss of data
+  Demo.cpp
+C:\Users\Ludo\source\repos\NESEmulator\NESEmulator\olcPixelGameEngine.h(2159,46): warning C4244: 'argument': conversion from 'WPARAM' to 'unsigned short', possible loss of data
+C:\Users\Ludo\source\repos\NESEmulator\NESEmulator\olcPixelGameEngine.h(2160,45): warning C4244: 'argument': conversion from 'WPARAM' to 'unsigned short', possible loss of data
+  ludo2c02.cpp
+  ludo6502.cpp
+  Generating Code...
+  NESEmulator.vcxproj -> C:\Users\Ludo\source\repos\NESEmulator\x64\Debug\NESEmulator.exe

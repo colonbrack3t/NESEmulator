@@ -8,3 +8,4 @@ The NES Architecture:
 Still to finish: 
 - APU only has 1 channel, so audio often sounds very strange
 - Implement more Mappers to include more games
+- Include a game selector screen

@@ -795,13 +795,13 @@ uint8_t ludo6502::SBC()
 {
 	fetch();
 	//flip memory sign to perform subtraction by addition
-	uint16_t value = (uint16_t)fetched ^ 0x00ff;
+	uint16_t value = ((uint16_t)fetched) ^ 0x00ff;
 
-	uint16_t temp = (uint16_t)a + value + (uint16_t)GetFlag(C);
+	uint16_t temp = ((uint16_t)a) + value + (uint16_t)GetFlag(C);
 	SetFlag(C, temp & 0xFF00);
 	SetFlag(Z, (temp & 0x00ff) == 0x00);
 	SetFlag(N, temp & 0x0080);
-	SetFlag(V, ((uint16_t)a ^ (uint16_t)temp) & ~((uint16_t)a ^ (uint16_t)fetched) & 0x0080);
+	SetFlag(V, ((uint16_t)a ^ temp) & (value ^ temp) & 0x0080);
 	a = temp & 0x00ff;
 
 	return 1;

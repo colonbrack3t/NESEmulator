@@ -11,7 +11,7 @@ Mapper_000::~Mapper_000()
 
 
 
-bool Mapper_000::cpuMapRead(uint16_t addr, uint32_t& mapped_addr)
+bool Mapper_000::cpuMapRead(uint16_t addr, uint32_t& mapped_addr, uint8_t data)
 {
 	// if PRGROM is 16KB
 	//     CPU Address Bus          PRG ROM
@@ -67,6 +67,10 @@ bool Mapper_000::ppuMapWrite(uint16_t addr, uint32_t& mapped_addr)
 	}
 
 	return false;
+}
+
+void Mapper_000::reset()
+{
 }
 
 /*#include "Mapper_000.h"

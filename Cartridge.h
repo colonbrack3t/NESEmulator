@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include "Mapper_000.h"
+#include "Mapper_002.h"
 class Cartridge
 {
 public:
@@ -16,6 +17,8 @@ public: //communication to main bus and ppu bus
 
 	bool ppuWrite(uint16_t addr, uint8_t data);
 	bool ppuRead(uint16_t addr, uint8_t& data);
+
+	void reset();
 
 private://PRG and CHR memory
 	std::vector<uint8_t> vPRGMemory;

@@ -57,10 +57,14 @@ Cartridge::Cartridge(const std::string& sFileName)
 				pMapper = std::make_shared<Mapper_000>(nPRGBanks, nCHRBanks);
 			
 				break;
-			
+			case 2:
+				pMapper = std::make_shared<Mapper_002>(nPRGBanks, nCHRBanks);
+
+				break;
 		
 		}
-		bImageValid = true;
+
+		bImageValid = pMapper != nullptr;//if mapper isnt set, then image isnt valid
 		ifs.close();
 	}
 
@@ -118,4 +122,7 @@ bool Cartridge::ppuRead(uint16_t addr, uint8_t& data)
 		return true;
 	}
 	return false; 
+}
+void Cartridge::reset() {
+	pMapper->reset();
 }

@@ -4,13 +4,19 @@ Bus::Bus()
 {
 	cpu.ConnectBus(this);
 	for (auto& i : cpuRam) i = 0x00;
-	
+
 }
 
 Bus::~Bus()
 {
 }
+Bus::Bus(const Bus& copy)
+	: cpu(copy.cpu), cpuRam(copy.cpuRam) {
+	
+	RemoveAPUandPPU();
+	cpu.ConnectBus(this);
 
+}
 void Bus::cpuWrite(uint16_t addr, uint16_t data)
 {
 	if (cart->cpuWrite(addr, data)) {
@@ -19,13 +25,13 @@ void Bus::cpuWrite(uint16_t addr, uint16_t data)
 
 	else if (addr >= 0x0000 && addr <= 0x1FFF)
 		cpuRam[addr & 0x07FF] = data;
-	else if(addr >= 0x2000 && addr <= 0x3FFF) {
+	else if (addr >= 0x2000 && addr <= 0x3FFF) {
 		ppu.cpuWrite(addr & 0x0007, data);
 	}
 	else if ((addr >= 0x4000 && addr <= 0x4013) || addr == 0x4015 || addr == 0x4017) {
 		apu.cpuWrite(addr, data);
 	}
-	else if(addr == 0x4014) {
+	else if (addr == 0x4014) {
 		dma_page = data;
 		dma_addr = 0x00;
 		dma_transfer = true;
@@ -46,7 +52,7 @@ uint8_t Bus::cpuRead(uint16_t addr, bool bReadOnly)
 	}
 
 	else if (addr >= 0x0000 && addr <= 0x1FFF)
-		data =  cpuRam[addr & 0x07FF];
+		data = cpuRam[addr & 0x07FF];
 	else if (addr >= 0x2000 && addr <= 0x3FFF) {
 		data = ppu.cpuRead(addr & 0x0007, bReadOnly);
 	}
@@ -82,14 +88,17 @@ void Bus::reset()
 	cart->reset();
 	cpu.reset();
 	ppu.reset();
-	
+
 	nSystemClockCounter = 0;
 }
 
 bool Bus::clock()
 {
-	ppu.clock();
-	apu.clock();
+	if (!remove_ppu_apu)
+	{
+		ppu.clock();
+		apu.clock();
+	}
 	if (nSystemClockCounter % 3 == 0)
 		if (dma_transfer) {
 			//dma only operates every other cpu cycle
@@ -112,26 +121,33 @@ bool Bus::clock()
 					}
 				}
 			}
-			
+
 		}
 		else
 		{
 			cpu.clock();
 		}
-
-	//Sync with audio
 	bool bAudioSampleReady = false;
-	dAudioTime += dAudioTimePerNESClock;
-	if (dAudioTime >= dAudioTimePerSystemSample) {
-		dAudioTime -= dAudioTimePerSystemSample;
-		dAudioSample = apu.GetOutputSample();
-		bAudioSampleReady = true;
+	if (!remove_ppu_apu)
+	{
+		//Sync with audio
+		
+		dAudioTime += dAudioTimePerNESClock;
+		if (dAudioTime >= dAudioTimePerSystemSample) {
+			dAudioTime -= dAudioTimePerSystemSample;
+			dAudioSample = apu.GetOutputSample();
+			bAudioSampleReady = true;
+		}
 	}
-
 	if (ppu.nmi) {
 		ppu.nmi = false;
 		cpu.nmi();
 	}
 	nSystemClockCounter++;
 	return bAudioSampleReady;
+}
+
+void Bus::RemoveAPUandPPU()
+{
+	remove_ppu_apu = true;
 }

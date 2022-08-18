@@ -11,6 +11,7 @@ class Bus
 public:
 	Bus();
 	~Bus();
+	Bus(const Bus& copy);
 public: //devices
 	ludo6502 cpu;
 	ludo2c02 ppu;
@@ -28,7 +29,9 @@ public: //System Interface
 	void insertCartridge(const std::shared_ptr<Cartridge>& cartridge);
 	void reset();
 	bool clock();
+	void RemoveAPUandPPU();
 private:
+	bool remove_ppu_apu = false;
 	double dAudioTimePerSystemSample = 0.0;
 	double dAudioTimePerNESClock = 0.0;
 	double dAudioTime = 0.0;

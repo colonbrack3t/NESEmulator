@@ -15,6 +15,7 @@ class ludo6502
 
 public:
 	ludo6502();
+	ludo6502(const ludo6502& copy);
 	~ludo6502();
 
 

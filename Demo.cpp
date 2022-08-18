@@ -65,6 +65,7 @@
 
 #define OLC_PGEX_SOUND
 #include "olcPGEX_Sound.h"
+#include "TimeTravellor.h"
 
 
 class NESEmulator : public olc::PixelGameEngine
@@ -78,7 +79,7 @@ private:
 	std::shared_ptr<Cartridge> cart;
 	bool bEmulationRun = true;
 	float fResidualTime = 0.0f;
-
+	//TimeTravellor timeTraveller = TimeTravellor(&nes , 11);
 	uint8_t nSelectedPalette = 0x00;
 
 private:
@@ -221,7 +222,7 @@ private:
 	
 	}
 	bool OnUserUpdate(float fElapsedTime) {
-		EmulatorUpdateWithAudio(fElapsedTime);
+		EmulateUpdateWithoutAudio(fElapsedTime);
 		return true;
 	}
 
@@ -230,7 +231,7 @@ private:
 		Clear(olc::DARK_BLUE);
 
 		nes.controller[0] = 0x00;
-		nes.controller[0] |= GetKey(olc::Key::X).bHeld ? 0x80 : 0x00;
+		/*nes.controller[0] |= GetKey(olc::Key::X).bHeld ? 0x80 : 0x00;
 		nes.controller[0] |= GetKey(olc::Key::Z).bHeld ? 0x40 : 0x00;
 		nes.controller[0] |= GetKey(olc::Key::A).bHeld ? 0x20 : 0x00;
 		nes.controller[0] |= GetKey(olc::Key::S).bHeld ? 0x10 : 0x00;
@@ -238,11 +239,9 @@ private:
 		nes.controller[0] |= GetKey(olc::Key::DOWN).bHeld ? 0x04 : 0x00;
 		nes.controller[0] |= GetKey(olc::Key::LEFT).bHeld ? 0x02 : 0x00;
 		nes.controller[0] |= GetKey(olc::Key::RIGHT).bHeld ? 0x01 : 0x00;
-
-		if (GetKey(olc::Key::SPACE).bPressed) bEmulationRun = !bEmulationRun;
-		if (GetKey(olc::Key::R).bPressed) nes.reset();
-		if (GetKey(olc::Key::P).bPressed) (++nSelectedPalette) &= 0x07;
-
+		*/
+		if (GetKey(olc::Key::F).bPressed)
+			return true; //nes.controller[0] = timeTraveller.ControllerVals();
 		if (bEmulationRun)
 		{
 			if (fResidualTime > 0.0f)
@@ -282,35 +281,8 @@ private:
 
 
 
-		//DrawCpu(516, 2);
-		//DrawCode(516, 72, 26);
-		/*for (int i = 0; i < 26; i++)
-		{
-			std::string s = hex(i, 2) + ": (" + std::to_string(nes.ppu.pOAM[i * 4 + 3])
-				+ ", " + std::to_string(nes.ppu.pOAM[i * 4 + 0]) + ") "
-				+ "ID: " + hex(nes.ppu.pOAM[i * 4 + 1], 2) +
-				+" AT: " + hex(nes.ppu.pOAM[i * 4 + 2], 2);
-			DrawString(516, 72 + i * 10, s);
-		}
-		// Draw Palettes & Pattern Tables ==============================================
-		const int nSwatchSize = 6;
-		for (int p = 0; p < 8; p++) // For each palette
-			for (int s = 0; s < 4; s++) // For each index
-				FillRect(516 + p * (nSwatchSize * 5) + s * nSwatchSize, 340,
-					nSwatchSize, nSwatchSize, nes.ppu.GetColourFromPaletteRam(p, s));
-*/
-		// Draw selection reticule around selected palette
-		//DrawRect(516 + nSelectedPalette * (nSwatchSize * 5) - 1, 339, (nSwatchSize * 4), nSwatchSize, olc::WHITE);
-
-		// Generate Pattern Tables
-		//DrawSprite(516, 348, &nes.ppu.GetPatternTable(0, nSelectedPalette));
-		//DrawSprite(648, 348, &nes.ppu.GetPatternTable(1, nSelectedPalette));
-
-		// Draw rendered output ========================================================
 		DrawSprite(0, 0, &nes.ppu.GetScreen(), 2);
-		int8_t score = nes.cpuRam[0x0110];
-		std::cout << score;
-		DrawString(512, 100, std::to_string(score));
+
 		return true;
 		
 	}

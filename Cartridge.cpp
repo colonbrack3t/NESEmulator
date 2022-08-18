@@ -74,7 +74,24 @@ Cartridge::Cartridge(const std::string& sFileName)
 Cartridge::~Cartridge()
 {
 }
+Cartridge::Cartridge(const Cartridge& copy)
+	
+{
+	vPRGMemory = std:: vector<uint8_t>(copy.vPRGMemory);
+	vCHRMemory = copy.vCHRMemory;
+	nMapperID = copy.nMapperID;
+	switch (nMapperID) {
+	case 0:
+		pMapper = std::make_shared<Mapper_000>(nPRGBanks, nCHRBanks);
 
+		break;
+	case 2:
+		pMapper = std::make_shared<Mapper_002>(nPRGBanks, nCHRBanks);
+
+		break;
+
+	}
+}
 bool Cartridge::ImageValid()
 {
 	return bImageValid;

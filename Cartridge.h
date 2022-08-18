@@ -11,6 +11,8 @@ public:
 	Cartridge(const std::string& sFileName);
 	~Cartridge();
 
+	Cartridge(const Cartridge& copy);
+
 public: //communication to main bus and ppu bus
 	bool cpuWrite(uint16_t addr, uint8_t data);
 	bool cpuRead(uint16_t addr, uint8_t& data);

@@ -728,7 +728,8 @@ void ludo2c02::clock()
 
 				}
 	}
-	sprScreen.SetPixel(cycle - 1, scanline, GetColourFromPaletteRam(palette, pixel));
+	if (!disable_screen)
+		sprScreen.SetPixel(cycle - 1, scanline, GetColourFromPaletteRam(palette, pixel));
 	cycle++;
 	if (cycle >= 341) {
 		scanline++;

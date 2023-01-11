@@ -112,6 +112,15 @@ void learnRAM::KillAll(){
 	for (size_t i = 0; i < population; i++)
 		individuals[i]->earlydeath = true;
 }
+void learnRAM::disableScreen(int i)
+{
+	individuals[i]->NES.ppu.disable_screen = true;
+}
+void learnRAM::enableScreen(int i)
+{
+	individuals[i]->NES.ppu.disable_screen = false;
+
+}
 bool learnRAM::AllDead()
 {
 	bool b = true;

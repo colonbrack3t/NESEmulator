@@ -20,6 +20,8 @@ public:
 	void Learn();
 	float* GetControllerBtns(int i);
 	void KillAll();
+	void disableScreen(int i);
+	void enableScreen(int i);
 private:
 	int population;
 	std::vector<std::thread> ths;

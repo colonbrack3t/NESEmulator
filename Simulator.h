@@ -35,7 +35,14 @@ public:
 	}
 	bool OnUserUpdate(float fElapsedTime) {
 		Clear(olc::DARK_BLUE);
-		
+		for (int i = 0; i < pop; i++) {
+			if (i != watching) {
+				brain.disableScreen(i);
+			}
+			else {
+				brain.enableScreen(i);
+			}
+		}
 		DrawSprite(0, 0, brain.getScreen(watching),2);
 		DrawString(0, 0, std::to_string(watching));
 		float* controllerBtns = brain.GetControllerBtns(watching);
@@ -52,7 +59,7 @@ public:
 			DrawString((i * 8*10), 490 , std::to_string(w),w>0? olc::GREEN : olc::RED );
 			
 		}
-	
+		
 		DrawString(0, 500, std::bitset<8>(brain.getIndividuals()[watching]->NES.controller[0]).to_string());
 		if (GetKey(olc::Key::RIGHT).bReleased)
 			watching = (watching + 1) % pop;

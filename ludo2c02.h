@@ -32,7 +32,7 @@ public:
 	olc::Pixel& GetColourFromPaletteRam(uint8_t palette, uint8_t pixel);
 
 	bool frame_complete = false;
-
+	bool disable_screen = false;
 private:
 
 	union
